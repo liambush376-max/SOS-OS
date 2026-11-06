@@ -1,0 +1,4 @@
+SOS_VERSION=@VERSION@
+SOS_BASE=debian-trixie
+SOS_RELEASE_CHANNEL=prerelease
+SOS_RELEASES_API=https://api.github.com/repos/liambush376-max/SOS-OS/releases

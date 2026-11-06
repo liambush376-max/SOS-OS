@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=SOS System Monitor
+GenericName=System Monitor
+Comment=Live CPU, GPU, memory, disk, network and temperature graphs
+Icon=sos-monitor
+Exec=sos-monitor
+Terminal=false
+Categories=System;Monitor;Qt;
+Keywords=cpu;gpu;ram;memory;temperature;performance;
+StartupNotify=true

@@ -1,0 +1,27 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    configure)
+        # Icon cache for the SOS app icons
+        if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+            gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor || true
+        fi
+        # Boot splash
+        if command -v plymouth-set-default-theme >/dev/null 2>&1; then
+            plymouth-set-default-theme sos || true
+        fi
+        # GRUB theme is set by /etc/default/grub.d/sos.cfg; regenerate the
+        # config only on an installed system that already has one.
+        if [ -f /boot/grub/grub.cfg ] && command -v update-grub >/dev/null 2>&1; then
+            update-grub || true
+        fi
+        # User-level update notifier for every user session
+        if command -v systemctl >/dev/null 2>&1; then
+            systemctl --global enable sos-update-notifier.timer || true
+            systemctl enable sos-boot-report.service || true
+        fi
+        ;;
+esac
+
+exit 0

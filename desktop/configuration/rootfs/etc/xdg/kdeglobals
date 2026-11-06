@@ -1,0 +1,15 @@
+[General]
+ColorScheme=SOSDark
+AccentColor=47,123,255
+LastUsedCustomAccentColor=47,123,255
+font=Noto Sans,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+fixed=JetBrains Mono,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+
+[KDE]
+LookAndFeelPackage=org.sosos.desktop
+widgetStyle=Breeze
+AnimationDurationFactor=0.75
+SingleClick=false
+
+[Icons]
+Theme=breeze-dark

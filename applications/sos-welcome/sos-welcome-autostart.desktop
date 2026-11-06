@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=SOS Welcome
+Comment=First-boot setup for SOS OS
+Icon=sos-welcome
+Exec=sos-welcome --autostart
+Terminal=false
+OnlyShowIn=KDE;
+X-KDE-autostart-phase=2
+NoDisplay=true

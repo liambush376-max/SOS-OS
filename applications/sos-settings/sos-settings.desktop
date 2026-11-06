@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=SOS Control Center
+GenericName=System Settings
+Comment=Appearance, performance, hardware, network, security and updates
+Icon=sos-settings
+Exec=sos-settings
+Terminal=false
+Categories=Settings;System;Qt;
+Keywords=theme;accent;wallpaper;gaming;performance;firewall;network;hardware;
+StartupNotify=true

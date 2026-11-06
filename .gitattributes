@@ -1,0 +1,6 @@
+# Everything in this repo is consumed on Linux; never let CRLF sneak into
+# shell scripts, hooks or live-build config.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.iso binary

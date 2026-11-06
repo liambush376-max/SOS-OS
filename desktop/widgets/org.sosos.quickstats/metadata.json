@@ -1,0 +1,15 @@
+{
+  "KPackageStructure": "Plasma/Applet",
+  "KPlugin": {
+    "Authors": [{ "Name": "SOS OS Project" }],
+    "Category": "System Information",
+    "Description": "Live CPU, RAM and temperature in the panel; click to open SOS System Monitor",
+    "Icon": "sos-monitor",
+    "Id": "org.sosos.quickstats",
+    "License": "GPL-3.0-or-later",
+    "Name": "SOS Quick Stats",
+    "Version": "0.1",
+    "Website": "https://github.com/liambush376-max/SOS-OS"
+  },
+  "X-Plasma-API-Minimum-Version": "6.0"
+}

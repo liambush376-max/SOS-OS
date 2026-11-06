@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=SOS Updater
+GenericName=Software Updates
+Comment=Install signed system updates and check for new SOS OS releases
+Icon=sos-updater
+Exec=sos-updater
+Terminal=false
+Categories=System;PackageManager;Qt;
+Keywords=update;upgrade;security;apt;
+StartupNotify=true

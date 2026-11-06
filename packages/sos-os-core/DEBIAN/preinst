@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+# base-files owns /usr/lib/os-release; divert it so SOS OS can ship its own
+# while keeping Debian's copy available as /usr/lib/os-release.debian.
+if [ "$1" = install ] || [ "$1" = upgrade ]; then
+    dpkg-divert --package sos-os-core --add --rename \
+        --divert /usr/lib/os-release.debian /usr/lib/os-release
+fi

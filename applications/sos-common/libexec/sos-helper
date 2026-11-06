@@ -1,0 +1,136 @@
+#!/usr/bin/python3 -I
+"""SOS OS privileged helper. Runs as root through pkexec (polkit action
+org.sosos.helper) and accepts only this fixed set of actions:
+
+    sos-helper refresh                     apt-get update
+    sos-helper upgrade                     apt-get upgrade --with-new-pkgs
+    sos-helper install-toolset <id> [--accept-steam-license]
+                                           install a tool set from toolsets.json
+    sos-helper firewall enable|disable     toggle ufw
+
+Arguments are validated against allowlists; package names come only from the
+root-owned /usr/share/sos-os/toolsets.json, never from the caller.
+"""
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+sys.path.insert(0, "/usr/lib/sos-os/python")
+
+from sos_common import sources, toolsets  # noqa: E402
+
+APT_ENV = {
+    "PATH": "/usr/sbin:/usr/bin:/sbin:/bin",
+    "DEBIAN_FRONTEND": "noninteractive",
+    "LC_ALL": "C.UTF-8",
+    "APT_LISTCHANGES_FRONTEND": "none",
+}
+APT_OPTS = [
+    "-o", "DPkg::Lock::Timeout=180",
+    "-o", "Dpkg::Options::=--force-confdef",
+    "-o", "Dpkg::Options::=--force-confold",
+    "-o", "APT::Status-Fd=1",
+]
+
+
+def say(msg: str) -> None:
+    print(f"[sos-helper] {msg}", flush=True)
+
+
+def run(argv: list[str]) -> int:
+    say("$ " + " ".join(argv))
+    return subprocess.call(argv, env=APT_ENV)
+
+
+def apt(*args: str) -> int:
+    return run(["apt-get", *APT_OPTS, *args])
+
+
+def enable_components(components: list[str]) -> bool:
+    """Add archive components to Debian entries. Returns True if changed."""
+    changed = False
+    candidates = [Path("/etc/apt/sources.list")]
+    candidates += sorted(Path("/etc/apt/sources.list.d").glob("*.list"))
+    candidates += sorted(Path("/etc/apt/sources.list.d").glob("*.sources"))
+    for path in candidates:
+        if not path.is_file():
+            continue
+        text = path.read_text()
+        new = (sources.add_components_deb822 if path.suffix == ".sources"
+               else sources.add_components_oneline)(text, components)
+        if new != text:
+            backup = path.with_name(path.name + ".sos-bak")
+            if not backup.exists():
+                backup.write_text(text)
+            path.write_text(new)
+            say(f"enabled components {' '.join(components)} in {path}")
+            changed = True
+    return changed
+
+
+def install_toolset(toolset_id: str, accept_steam_license: bool) -> int:
+    try:
+        ts = toolsets.by_id(toolset_id, toolsets.DEFAULT_PATH)
+    except (KeyError, OSError, ValueError) as exc:
+        say(f"unknown or invalid tool set: {exc}")
+        return 2
+    if "steam-installer" in ts.packages and not accept_steam_license:
+        # steam-installer asks for licence agreement through debconf; we only
+        # answer it when the user agreed in the GUI (--accept-steam-license).
+        say("the Steam licence must be accepted by the user first (--accept-steam-license)")
+        return 3
+    say(f"installing tool set '{ts.name}'")
+    if ts.warning:
+        say(f"note: {ts.warning}")
+    enable_components(ts.components)
+    if ts.multiarch_i386:
+        arches = subprocess.run(["dpkg", "--print-foreign-architectures"],
+                                capture_output=True, text=True, env=APT_ENV).stdout.split()
+        if "i386" not in arches and run(["dpkg", "--add-architecture", "i386"]) != 0:
+            return 1
+    # Always refresh so newly enabled components/architectures resolve.
+    if apt("update") != 0:
+        return 1
+    if accept_steam_license:
+        selections = ("steam steam/question select I AGREE\n"
+                      "steam steam/license note \n"
+                      "steam steam/purge note \n")
+        subprocess.run(["debconf-set-selections"], input=selections, text=True, env=APT_ENV, check=False)
+    return apt("install", "-y", *ts.packages)
+
+
+def firewall(state: str) -> int:
+    if state == "enable":
+        rc = run(["ufw", "--force", "enable"])
+    else:
+        rc = run(["ufw", "disable"])
+    return rc
+
+
+def main(argv: list[str]) -> int:
+    if os.geteuid() != 0:
+        say("must be run as root via pkexec")
+        return 1
+    if not argv:
+        say(__doc__)
+        return 2
+    action, args = argv[0], argv[1:]
+    if action == "refresh" and not args:
+        return apt("update")
+    if action == "upgrade" and not args:
+        rc = apt("update")
+        return rc if rc else apt("-y", "--with-new-pkgs", "upgrade")
+    if action == "install-toolset" and len(args) in (1, 2) and toolsets.ID_RE.match(args[0]):
+        if len(args) == 2 and args[1] != "--accept-steam-license":
+            say(f"unknown option {args[1]!r}")
+            return 2
+        return install_toolset(args[0], accept_steam_license=len(args) == 2)
+    if action == "firewall" and len(args) == 1 and args[0] in ("enable", "disable"):
+        return firewall(args[0])
+    say(f"refusing unknown action: {' '.join(argv)!r}")
+    return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

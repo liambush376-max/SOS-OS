@@ -1,0 +1,17 @@
+#!/bin/sh
+# Live-session-only conveniences. live-config runs the scripts in
+# /lib/live/config at boot of the live medium only; installed systems have
+# live-config removed by Calamares, so this never runs there.
+set -e
+
+cat > /lib/live/config/2000-sos-installer-shortcut <<'EOF'
+#!/bin/sh
+# Put an "Install SOS OS" icon on the live user's desktop.
+. /lib/live/config.sh 2>/dev/null || true
+LIVE_USERNAME="${LIVE_USERNAME:-sos}"
+DESKTOP="/home/${LIVE_USERNAME}/Desktop"
+mkdir -p "$DESKTOP"
+install -m 0755 /usr/share/sos-os/live/install-sos-os.desktop "$DESKTOP/install-sos-os.desktop"
+chown -R "${LIVE_USERNAME}:${LIVE_USERNAME}" "$DESKTOP"
+EOF
+chmod 0755 /lib/live/config/2000-sos-installer-shortcut

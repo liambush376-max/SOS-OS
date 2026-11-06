@@ -1,0 +1,73 @@
+name: Bug report
+description: Something in SOS OS doesn't work as expected
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! **Security issues** go through private vulnerability reporting (see SECURITY.md), not here.
+  - type: input
+    id: version
+    attributes:
+      label: SOS OS version
+      description: Output of `cat /etc/sos-release` or the ISO file name
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Where are you running SOS OS?
+      options:
+        - Live USB
+        - Installed on hardware
+        - QEMU/KVM
+        - VirtualBox
+        - VMware
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - Boot / bootloader
+        - Installer (Calamares)
+        - Desktop / theme
+        - SOS Control Center
+        - SOS System Monitor
+        - SOS Updater
+        - SOS Welcome
+        - SOS DevHub
+        - Hardware / drivers
+        - Build / CI
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Boot the live USB
+        2. Open SOS Control Center → Network
+        3. ...
+  - type: textarea
+    id: hardware
+    attributes:
+      label: Hardware
+      description: Output of `inxi -Fxz` or `lspci -nnk | grep -A3 -E 'VGA|3D|Network'`. Remove serial numbers if you prefer.
+      render: text
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Relevant output of `journalctl -b -p warning` or the app's terminal output. **Don't paste passwords or tokens.**
+      render: text

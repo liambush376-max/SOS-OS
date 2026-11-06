@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- sos-welcome application icon. Original artwork, GPL-3.0-or-later, SOS OS Project. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2F7BFF"/>
+      <stop offset="1" stop-color="#9B3DFF"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="116" height="116" rx="28" fill="#0E1024"/>
+  <rect x="6" y="6" width="116" height="116" rx="28" fill="none" stroke="url(#g)" stroke-width="5"/>
+  <g fill="none" stroke="url(#g)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M64 30l9 22 23 2-18 15 6 23-20-13-20 13 6-23-18-15 23-2z"/>
+  </g>
+</svg>

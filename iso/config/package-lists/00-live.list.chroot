@@ -1,0 +1,8 @@
+# Live system plumbing
+live-boot
+live-config
+live-config-systemd
+linux-image-amd64
+systemd-sysv
+sudo
+user-setup

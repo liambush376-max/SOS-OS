@@ -1,0 +1,41 @@
+# SOS OS branding for the Calamares installer.
+---
+componentName: sos
+
+welcomeStyleCalamares: false
+welcomeExpandingLogo: true
+windowExpanding: normal
+windowSize: 1024px,640px
+windowPlacement: center
+sidebar: widget
+navigation: widget
+
+strings:
+    productName:         "SOS OS"
+    shortProductName:    "SOS OS"
+    version:             "0.1"
+    shortVersion:        "0.1"
+    versionedName:       "SOS OS 0.1"
+    shortVersionedName:  "SOS OS 0.1"
+    bootloaderEntryName: "SOS OS"
+    productUrl:          "https://github.com/liambush376-max/SOS-OS"
+    supportUrl:          "https://github.com/liambush376-max/SOS-OS/issues"
+    knownIssuesUrl:      "https://github.com/liambush376-max/SOS-OS/blob/main/docs/STATUS.md"
+    releaseNotesUrl:     "https://github.com/liambush376-max/SOS-OS/releases"
+
+images:
+    productLogo:         "logo.png"
+    productIcon:         "logo.png"
+    productWelcome:      "welcome.png"
+
+slideshow:               "show.qml"
+slideshowAPI:            2
+
+style:
+    SidebarBackground:        "#0E1024"
+    SidebarText:              "#E6E9FF"
+    SidebarTextCurrent:       "#FFFFFF"
+    SidebarBackgroundCurrent: "#2F7BFF"
+
+uploadServer:
+    type: "none"

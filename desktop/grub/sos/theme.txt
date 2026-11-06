@@ -1,0 +1,56 @@
+# SOS OS GRUB theme (installed systems). background.png is rendered at
+# package build time from branding/wallpapers/sos-boot.svg.
+title-text: ""
+desktop-image: "background.png"
+desktop-color: "#05060F"
+terminal-font: "Unifont Regular 16"
+
++ label {
+    top = 18%
+    left = 10%
+    width = 50%
+    align = "left"
+    text = "SOS OS"
+    font = "Unifont Regular 16"
+    color = "#E6E9FF"
+}
+
++ boot_menu {
+    left = 10%
+    top = 26%
+    width = 50%
+    height = 50%
+    item_font = "Unifont Regular 16"
+    item_color = "#8C92BA"
+    selected_item_color = "#FFFFFF"
+    selected_item_font = "Unifont Regular 16"
+    item_height = 36
+    item_padding = 12
+    item_spacing = 6
+    icon_width = 0
+    icon_height = 0
+    scrollbar = false
+}
+
++ progress_bar {
+    id = "__timeout__"
+    left = 10%
+    top = 80%
+    width = 50%
+    height = 6
+    fg_color = "#2F7BFF"
+    bg_color = "#1C1F3A"
+    border_color = "#1C1F3A"
+    show_text = false
+}
+
++ label {
+    id = "__timeout__"
+    left = 10%
+    top = 83%
+    width = 50%
+    align = "left"
+    color = "#8C92BA"
+    font = "Unifont Regular 16"
+    text = "Booting the selected entry in %d seconds"
+}

@@ -1,0 +1,40 @@
+# KDE Plasma 6 desktop (minimal metapackage + chosen apps)
+kde-plasma-desktop
+plasma-workspace
+kwin-wayland
+sddm
+sddm-theme-breeze
+plasma-nm
+plasma-pa
+plasma-systemmonitor
+bluedevil
+powerdevil
+kscreen
+breeze
+breeze-gtk-theme
+kde-config-sddm
+plymouth
+plymouth-themes
+# Apps
+konsole
+dolphin
+kate
+ark
+gwenview
+okular
+spectacle
+kcalc
+partitionmanager
+firefox-esr
+# QML modules used by the SDDM theme, splash and widget
+qml6-module-qtquick-controls
+qml6-module-qtquick-layouts
+qml6-module-qtquick-window
+qml6-module-qt5compat-graphicaleffects
+qt6-svg-plugins
+# Fonts
+fonts-noto-core
+fonts-noto-color-emoji
+fonts-jetbrains-mono
+# Networking
+network-manager

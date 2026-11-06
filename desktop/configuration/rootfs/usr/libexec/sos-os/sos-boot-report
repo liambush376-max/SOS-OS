@@ -1,0 +1,28 @@
+#!/bin/bash
+# Prints a single machine-readable line to the system console once the
+# graphical target is reached. scripts/qemu-boot-test.sh watches the serial
+# console for it. Harmless on real hardware (it also lands in the journal).
+set -u
+
+dm_state=inactive
+for _ in $(seq 1 90); do
+    dm_state="$(systemctl is-active display-manager.service 2>/dev/null || true)"
+    [ "$dm_state" = active ] && break
+    sleep 2
+done
+
+failed="$(systemctl list-units --state=failed --no-legend --plain 2>/dev/null | awk '{print $1}' | paste -sd, -)"
+nfailed=0
+[ -n "$failed" ] && nfailed="$(echo "$failed" | tr ',' '\n' | wc -l)"
+version="$(. /etc/sos-release 2>/dev/null; echo "${SOS_VERSION:-unknown}")"
+
+if [ "$dm_state" = active ]; then
+    line="SOS-OS-BOOT-OK version=$version target=graphical dm=active failed_units=$nfailed ${failed:+failed=[$failed]}"
+else
+    line="SOS-OS-BOOT-FAIL version=$version target=graphical dm=$dm_state failed_units=$nfailed ${failed:+failed=[$failed]}"
+fi
+
+echo "$line"
+echo "$line" > /dev/console 2>/dev/null || true
+[ -w /dev/ttyS0 ] && echo "$line" > /dev/ttyS0 2>/dev/null
+exit 0

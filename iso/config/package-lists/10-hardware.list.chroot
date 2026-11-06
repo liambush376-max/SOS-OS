@@ -1,0 +1,37 @@
+# Hardware support: firmware is listed explicitly (instead of
+# --firmware-chroot) to keep the ISO small enough for GitHub Releases.
+firmware-linux-free
+firmware-misc-nonfree
+firmware-amd-graphics
+firmware-intel-graphics
+firmware-iwlwifi
+firmware-realtek
+firmware-atheros
+firmware-brcm80211
+firmware-mediatek
+firmware-sof-signed
+intel-microcode
+amd64-microcode
+# Graphics / Vulkan (Mesa: AMD, Intel, virtio)
+mesa-vulkan-drivers
+mesa-va-drivers
+libgl1-mesa-dri
+vulkan-tools
+# Detection and sensors
+pciutils
+usbutils
+lm-sensors
+dmidecode
+mokutil
+# Power, Bluetooth, printing, audio
+power-profiles-daemon
+bluez
+pipewire-audio
+wireplumber
+cups
+# Game controllers (udev rules for common pads)
+steam-devices
+# Virtual machine guests
+spice-vdagent
+qemu-guest-agent
+open-vm-tools-desktop

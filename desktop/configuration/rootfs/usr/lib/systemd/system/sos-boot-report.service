@@ -1,0 +1,12 @@
+[Unit]
+Description=SOS OS boot report (prints boot health to the system console)
+Documentation=https://github.com/liambush376-max/SOS-OS/blob/main/docs/TESTING.md
+After=graphical.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/sos-os/sos-boot-report
+RemainAfterExit=yes
+
+[Install]
+WantedBy=graphical.target

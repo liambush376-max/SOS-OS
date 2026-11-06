@@ -1,0 +1,13 @@
+# Tooling configuration only; SOS applications are installed by
+# scripts/build-packages.sh, not by pip.
+[tool.ruff]
+line-length = 140
+target-version = "py311"
+extend-include = ["applications/sos-common/libexec/sos-helper", "desktop/configuration/rootfs/usr/bin/sos-quickstats"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "UP"]
+ignore = ["B008"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

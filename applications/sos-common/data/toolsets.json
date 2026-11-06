@@ -1,0 +1,66 @@
+{
+  "toolsets": [
+    {
+      "id": "gaming",
+      "name": "Gaming",
+      "description": "Steam (installer from Debian contrib; Steam itself is downloaded from Valve on first start), Proton via Steam Play, GameMode, MangoHud performance overlay, Vulkan tools and 32-bit Mesa drivers.",
+      "packages": [
+        "steam-installer",
+        "steam-devices",
+        "gamemode",
+        "mangohud",
+        "vulkan-tools",
+        "mesa-vulkan-drivers",
+        "mesa-vulkan-drivers:i386",
+        "libgl1-mesa-dri:i386",
+        "libglx-mesa0:i386"
+      ],
+      "components": ["main", "contrib", "non-free-firmware"],
+      "multiarch_i386": true,
+      "warning": "Enables 32-bit (i386) packages, which Steam needs. Steam is proprietary software subject to Valve's Steam Subscriber Agreement.",
+      "recommended_for": ["amd", "intel", "nvidia"]
+    },
+    {
+      "id": "nvidia",
+      "name": "NVIDIA proprietary driver",
+      "description": "Debian's packaged NVIDIA driver (DKMS) with 32-bit libraries for Steam. Only for NVIDIA GPUs that the open-source nouveau driver handles poorly.",
+      "packages": [
+        "linux-headers-amd64",
+        "nvidia-driver",
+        "firmware-misc-nonfree",
+        "nvidia-driver-libs:i386"
+      ],
+      "components": ["main", "contrib", "non-free", "non-free-firmware"],
+      "multiarch_i386": true,
+      "warning": "With Secure Boot enabled, the DKMS kernel module must be signed with a Machine Owner Key (MOK): you will be asked to create and enrol one at the next boot. SOS OS never disables Secure Boot for you. Restart after installing.",
+      "recommended_for": ["nvidia"]
+    },
+    {
+      "id": "developer",
+      "name": "Developer tools",
+      "description": "Git, GitHub CLI, Python with venv and pip, GCC, Clang, GDB, CMake, Make, OpenSSH client, Podman containers and the Kate editor with language-server support.",
+      "packages": [
+        "git",
+        "gh",
+        "python3",
+        "python3-venv",
+        "python3-pip",
+        "build-essential",
+        "gcc",
+        "clang",
+        "gdb",
+        "cmake",
+        "pkgconf",
+        "openssh-client",
+        "podman",
+        "podman-compose",
+        "kate",
+        "shellcheck"
+      ],
+      "components": ["main"],
+      "multiarch_i386": false,
+      "warning": "",
+      "recommended_for": []
+    }
+  ]
+}

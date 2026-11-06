@@ -1,0 +1,14 @@
+[SddmGreeterTheme]
+Name=SOS OS
+Description=SOS OS login screen with a frosted-glass login card
+Author=SOS OS Project
+Copyright=SOS OS Project
+License=GPL-3.0-or-later
+Type=sddm-theme
+Version=0.1
+Website=https://github.com/liambush376-max/SOS-OS
+MainScript=Main.qml
+ConfigFile=theme.conf
+Theme-Id=sos
+Theme-API=2.0
+QtVersion=6

@@ -1,0 +1,33 @@
+#!/bin/sh
+# Runs inside the chroot after all packages (including sos-os-core) are
+# installed. Anything that must also apply to installed systems belongs in
+# packages/sos-os-core/DEBIAN/postinst instead. Calamares copies this chroot
+# verbatim to the target disk, so everything here also ends up installed.
+set -e
+
+echo "I: SOS OS: configuring system defaults"
+
+# Plymouth boot splash
+if command -v plymouth-set-default-theme >/dev/null 2>&1; then
+    plymouth-set-default-theme sos
+fi
+
+# Calamares: use the SOS branding and module overrides shipped in sos-os-core
+if [ -f /etc/calamares/settings.conf ]; then
+    sed -i 's/^branding:.*/branding: sos/' /etc/calamares/settings.conf
+fi
+
+# Firewall on by default (rules are applied at boot by ufw.service)
+if [ -f /etc/ufw/ufw.conf ]; then
+    sed -i 's/^ENABLED=.*/ENABLED=yes/' /etc/ufw/ufw.conf
+    systemctl enable ufw.service
+fi
+
+systemctl enable sos-boot-report.service
+systemctl set-default graphical.target
+
+# No listening SSH server by default
+if dpkg -s openssh-server >/dev/null 2>&1; then
+    echo "E: openssh-server must not be part of the default image" >&2
+    exit 1
+fi

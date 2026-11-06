@@ -1,0 +1,15 @@
+{
+  "KPackageStructure": "Plasma/LookAndFeel",
+  "KPlugin": {
+    "Authors": [{ "Name": "SOS OS Project" }],
+    "Category": "",
+    "Description": "SOS OS: dark, glassy, electric blue and purple",
+    "Id": "org.sosos.desktop",
+    "License": "GPL-3.0-or-later",
+    "Name": "SOS OS",
+    "Version": "0.1",
+    "Website": "https://github.com/liambush376-max/SOS-OS"
+  },
+  "X-Plasma-APIVersion": "2",
+  "X-Plasma-MainScript": "defaults"
+}

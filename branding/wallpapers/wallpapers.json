@@ -1,0 +1,6 @@
+{
+  "wallpapers": [
+    { "id": "SOS-Aurora", "name": "SOS Aurora", "file": "sos-aurora.svg", "default": true },
+    { "id": "SOS-Nebula", "name": "SOS Nebula", "file": "sos-nebula.svg", "default": false }
+  ]
+}

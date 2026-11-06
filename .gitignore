@@ -1,0 +1,42 @@
+# Build output
+/build/
+/out/
+*.iso
+*.iso.sha256
+*.deb
+*.img
+*.qcow2
+
+# live-build working state (created inside iso/ during a build)
+/iso/.build/
+/iso/cache/
+/iso/chroot/
+/iso/binary/
+/iso/local/
+/iso/*.log
+/iso/*.packages
+/iso/*.contents
+/iso/*.files
+/iso/*.zsync
+/iso/config/packages.chroot/
+/iso/config/includes.chroot/
+/iso/config/bootloaders/
+/iso/config/binary
+/iso/config/bootstrap
+/iso/config/chroot
+/iso/config/common
+/iso/config/source
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+# Secrets must never be committed
+*.key
+*.pem
+*.gpg
+!branding/**/*.gpg
+.env

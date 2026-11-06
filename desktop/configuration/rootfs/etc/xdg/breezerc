@@ -1,0 +1,14 @@
+[Common]
+OutlineIntensity=OutlineLow
+ShadowSize=ShadowLarge
+ShadowStrength=200
+ShadowColor=12,8,40
+
+[Windeco]
+TitleAlignment=AlignCenterFullWidth
+DrawBackgroundGradient=false
+DrawBorderOnMaximizedWindows=false
+BorderSize=None
+
+[Style]
+MenuOpacity=85

@@ -1,0 +1,10 @@
+[Unit]
+Description=Check for SOS OS updates periodically
+
+[Timer]
+OnStartupSec=15min
+OnUnitActiveSec=6h
+RandomizedDelaySec=10min
+
+[Install]
+WantedBy=timers.target

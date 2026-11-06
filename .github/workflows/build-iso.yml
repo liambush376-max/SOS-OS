@@ -1,0 +1,160 @@
+name: Build ISO
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  workflow_dispatch:
+  workflow_call:
+    outputs:
+      version:
+        description: SOS OS version that was built
+        value: ${{ jobs.build.outputs.version }}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-iso-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'push' || !startsWith(github.ref, 'refs/tags/') }}
+
+jobs:
+  build:
+    name: Build live ISO
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Read version
+        id: meta
+        run: |
+          v="$(tr -d '[:space:]' < VERSION)"
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "iso=sos-os-$v-amd64.iso" >> "$GITHUB_OUTPUT"
+          # Rotate the package cache weekly so it doesn't grow forever.
+          echo "week=$(date -u +%G-W%V)" >> "$GITHUB_OUTPUT"
+
+      - name: Free runner disk space
+        run: |
+          df -h /
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL \
+                      /usr/local/share/boost /usr/local/.ghcup /usr/share/swift
+          sudo docker image prune --all --force >/dev/null || true
+          df -h /
+
+      - name: Restore live-build package cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: iso/cache
+          key: lb-trixie-${{ steps.meta.outputs.week }}-${{ hashFiles('iso/config/package-lists/**', 'iso/auto/config') }}
+          restore-keys: |
+            lb-trixie-${{ steps.meta.outputs.week }}-
+            lb-trixie-
+
+      - name: Build ISO (privileged Debian 13 container)
+        run: ./scripts/build-in-container.sh
+
+      - name: Install validation tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends xorriso squashfs-tools python3-pytest
+
+      - name: Validate ISO
+        run: ./scripts/validate-iso.sh "out/${{ steps.meta.outputs.iso }}"
+
+      - name: Summary
+        run: |
+          {
+            echo "## SOS OS ${{ steps.meta.outputs.version }}"
+            echo
+            echo "| File | Size | SHA-256 |"
+            echo "| --- | --- | --- |"
+            echo "| \`${{ steps.meta.outputs.iso }}\` | $(du -h "out/${{ steps.meta.outputs.iso }}" | cut -f1) | \`$(cut -d' ' -f1 "out/${{ steps.meta.outputs.iso }}.sha256")\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload ISO artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sos-os-iso
+          path: |
+            out/${{ steps.meta.outputs.iso }}
+            out/${{ steps.meta.outputs.iso }}.sha256
+            out/sos-os-${{ steps.meta.outputs.version }}-amd64.packages
+          retention-days: 7
+          compression-level: 0
+          if-no-files-found: error
+
+      - name: Report build failure
+        if: failure()
+        run: |
+          log=iso/build.log
+          [ -f "$log" ] || log=out/build.log
+          echo "::error title=ISO build failed::See the build-log artifact and the summary for the last 80 lines."
+          {
+            echo "## ❌ ISO build failed"
+            echo
+            echo '```'
+            tail -n 80 "$log" 2>/dev/null || echo "no build log was produced"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: build-log
+          path: |
+            iso/build.log
+            out/build.log
+          retention-days: 14
+          if-no-files-found: ignore
+
+  boot-test:
+    name: QEMU boot test
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Download ISO
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: sos-os-iso
+          path: out
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm || true
+          ls -l /dev/kvm || echo "KVM unavailable; falling back to TCG"
+
+      - name: Install QEMU
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends qemu-system-x86 xorriso
+
+      - name: Boot ISO and wait for graphical target
+        run: ./scripts/qemu-boot-test.sh out/sos-os-${{ needs.build.outputs.version }}-amd64.iso
+
+      - name: Upload serial console log
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: qemu-serial-log
+          path: out/qemu-serial.log
+          retention-days: 14
+          if-no-files-found: ignore

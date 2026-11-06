@@ -1,0 +1,11 @@
+#!/usr/bin/python3
+"""Print a one-line JSON snapshot (cpu %, ram %, hottest temperature °C) for
+the SOS Quick Stats panel widget."""
+import sys
+
+sys.path.insert(0, "/usr/lib/sos-os/python")
+
+from sos_common.quickstats import main  # noqa: E402
+
+if __name__ == "__main__":
+    sys.exit(main())

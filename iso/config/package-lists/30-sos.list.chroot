@@ -1,0 +1,16 @@
+# Runtime dependencies of the SOS applications (also declared in the
+# sos-os-core package; listed here so the build fails early if renamed).
+python3
+python3-pyqt6
+python3-psutil
+pkexec
+polkitd
+libnotify-bin
+ufw
+git
+# Installer
+calamares
+calamares-settings-debian
+# Signed boot chain for the installed system (Secure Boot)
+shim-signed
+grub-efi-amd64-signed

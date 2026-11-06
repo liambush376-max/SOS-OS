@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = remove ] || [ "$1" = purge ] || [ "$1" = abort-install ]; then
+    dpkg-divert --package sos-os-core --remove --rename \
+        --divert /usr/lib/os-release.debian /usr/lib/os-release
+    if command -v systemctl >/dev/null 2>&1; then
+        systemctl --global disable sos-update-notifier.timer || true
+    fi
+fi

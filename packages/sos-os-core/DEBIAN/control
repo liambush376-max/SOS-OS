@@ -1,0 +1,20 @@
+Package: sos-os-core
+Version: @VERSION@
+Architecture: all
+Maintainer: SOS OS Project <noreply@users.noreply.github.com>
+Installed-Size: @INSTALLED_SIZE@
+Section: misc
+Priority: optional
+Depends: python3 (>= 3.11), python3-pyqt6, python3-psutil, pkexec, polkitd,
+ libnotify-bin, ufw, plasma-workspace, kwin-wayland, sddm, plymouth,
+ qml6-module-qtquick-controls, qml6-module-qtquick-layouts,
+ qml6-module-qt5compat-graphicaleffects, network-manager, power-profiles-daemon,
+ pciutils, git
+Recommends: lm-sensors, mokutil, konsole, kate, plasma-systemmonitor
+Homepage: https://github.com/liambush376-max/SOS-OS
+Description: SOS OS core system: branding, desktop theme and system apps
+ Provides the SOS OS identity on top of Debian: os-release branding, the
+ SOS Dark Plasma colour scheme and look-and-feel, panel layout and Quick
+ Stats widget, SDDM login theme, Plymouth splash, GRUB theme, firewall
+ defaults, and the SOS Control Center, System Monitor, Updater, Welcome and
+ DevHub applications with their polkit-protected helper.

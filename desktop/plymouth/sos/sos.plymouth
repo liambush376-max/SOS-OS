@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=SOS OS
+Description=SOS OS boot splash: pulsing beacon logo with progress dots
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/sos
+ScriptFile=/usr/share/plymouth/themes/sos/sos.script

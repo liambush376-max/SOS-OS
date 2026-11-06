@@ -1,0 +1,11 @@
+#!/bin/sh
+# Trim the image. Keep this conservative: removing docs is fine, removing
+# copyright files is not (license obligations).
+set -e
+
+apt-get clean
+rm -rf /var/lib/apt/lists/*
+rm -rf /tmp/* /var/tmp/*
+find /usr/share/doc -type f ! -name copyright ! -name 'changelog.Debian.gz' -delete 2>/dev/null || true
+find /usr/share/doc -type d -empty -delete 2>/dev/null || true
+rm -rf /usr/share/man/??_* /usr/share/man/??

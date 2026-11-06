@@ -1,0 +1,14 @@
+PRETTY_NAME="SOS OS @VERSION@"
+NAME="SOS OS"
+VERSION_ID="@VERSION@"
+VERSION="@VERSION@ (based on Debian 13 trixie)"
+VERSION_CODENAME=trixie
+DEBIAN_VERSION_FULL=13
+ID=sos-os
+ID_LIKE=debian
+LOGO=sos-os
+ANSI_COLOR="38;2;47;123;255"
+HOME_URL="https://github.com/liambush376-max/SOS-OS"
+DOCUMENTATION_URL="https://github.com/liambush376-max/SOS-OS/tree/main/docs"
+SUPPORT_URL="https://github.com/liambush376-max/SOS-OS/discussions"
+BUG_REPORT_URL="https://github.com/liambush376-max/SOS-OS/issues"

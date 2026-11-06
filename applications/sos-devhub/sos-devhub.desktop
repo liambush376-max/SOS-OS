@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=SOS DevHub
+GenericName=Project Launcher
+Comment=Clone GitHub repositories and open development projects
+Icon=sos-devhub
+Exec=sos-devhub
+Terminal=false
+Categories=Development;Qt;
+Keywords=git;github;clone;repository;code;project;
+StartupNotify=true

@@ -1,0 +1,8 @@
+[Unit]
+Description=SOS OS update notification
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/sos-updater --notify
