@@ -37,10 +37,12 @@ jobs:
         id: meta
         run: |
           v="$(tr -d '[:space:]' < VERSION)"
-          echo "version=$v" >> "$GITHUB_OUTPUT"
-          echo "iso=sos-os-$v-amd64.iso" >> "$GITHUB_OUTPUT"
-          # Rotate the package cache weekly so it doesn't grow forever.
-          echo "week=$(date -u +%G-W%V)" >> "$GITHUB_OUTPUT"
+          # The week key rotates the package cache so it doesn't grow forever.
+          {
+            echo "version=$v"
+            echo "iso=sos-os-$v-amd64.iso"
+            echo "week=$(date -u +%G-W%V)"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Free runner disk space
         run: |

@@ -30,6 +30,7 @@ fi
 
 cleanup() {
     [ -n "${QPID:-}" ] && kill "$QPID" 2>/dev/null || true
+    chmod -R u+w "$WORK" 2>/dev/null || true
     rm -rf "$WORK"
 }
 trap cleanup EXIT

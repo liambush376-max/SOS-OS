@@ -7,7 +7,8 @@ set -euo pipefail
 ISO="${1:?usage: validate-iso.sh <iso>}"
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 WORK="$(mktemp -d)"
-trap 'rm -rf "$WORK"' EXIT
+# Files extracted from an ISO keep its read-only modes, so restore write access before cleanup.
+trap 'chmod -R u+w "$WORK" 2>/dev/null; rm -rf "$WORK"' EXIT
 fail=0
 pass() { printf '  \033[32mPASS\033[0m %s\n' "$*"; }
 bad()  { printf '  \033[31mFAIL\033[0m %s\n' "$*"; fail=1; }
