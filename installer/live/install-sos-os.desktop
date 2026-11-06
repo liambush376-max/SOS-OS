@@ -5,6 +5,6 @@ Name=Install SOS OS
 GenericName=System Installer
 Comment=Install SOS OS to an internal drive. You will be asked to confirm before any disk is changed.
 Icon=sos-os
-Exec=sh -c 'if command -v install-debian >/dev/null; then exec install-debian; else exec pkexec calamares; fi'
+Exec=sos-install
 Terminal=false
 Categories=System;

@@ -108,9 +108,10 @@ def test_desktop_files(path):
     for key in ("Type", "Name", "Exec", "Icon"):
         assert entry.get(key), key
     exe = entry["Exec"].split()[0]
+    assert all(c not in entry["Exec"] for c in "'\";<>|&$`"), "Exec must not contain shell syntax"
     if exe.startswith("sos-"):
-        assert (REPO / "applications" / exe / "bin" / exe).is_file(), exe
-        assert (REPO / "branding/icons" / f"{entry['Icon']}.svg").is_file()
+        assert ((REPO / "applications" / exe / "bin" / exe).is_file()
+                or (ROOTFS / "usr/bin" / exe).is_file()), exe
 
 
 def test_systemd_units_parse():

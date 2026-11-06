@@ -7,6 +7,6 @@ Comment=Choose a theme, check your hardware and add gaming or developer tools
 Icon=sos-welcome
 Exec=sos-welcome
 Terminal=false
-Categories=System;Settings;Qt;
+Categories=Settings;Qt;
 Keywords=welcome;setup;steam;gaming;developer;tools;
 StartupNotify=true

@@ -9,7 +9,7 @@ REPO = Path(__file__).resolve().parents[2]
 
 SOS_FILES = [
     "/usr/bin/sos-settings", "/usr/bin/sos-monitor", "/usr/bin/sos-updater", "/usr/bin/sos-welcome",
-    "/usr/bin/sos-devhub", "/usr/bin/sos-quickstats",
+    "/usr/bin/sos-devhub", "/usr/bin/sos-quickstats", "/usr/bin/sos-install",
     "/usr/libexec/sos-os/sos-helper", "/usr/libexec/sos-os/sos-boot-report",
     "/usr/share/polkit-1/actions/org.sosos.helper.policy",
     "/usr/share/sos-os/toolsets.json",

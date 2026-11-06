@@ -1,0 +1,8 @@
+#!/bin/sh
+# Start the Calamares installer from the live session. Debian's
+# calamares-settings-debian ships an `install-debian` wrapper that handles
+# privilege escalation; fall back to pkexec if it is missing.
+if command -v install-debian >/dev/null 2>&1; then
+    exec install-debian "$@"
+fi
+exec pkexec calamares "$@"

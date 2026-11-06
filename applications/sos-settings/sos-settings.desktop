@@ -7,6 +7,6 @@ Comment=Appearance, performance, hardware, network, security and updates
 Icon=sos-settings
 Exec=sos-settings
 Terminal=false
-Categories=Settings;System;Qt;
+Categories=Settings;Qt;
 Keywords=theme;accent;wallpaper;gaming;performance;firewall;network;hardware;
 StartupNotify=true
